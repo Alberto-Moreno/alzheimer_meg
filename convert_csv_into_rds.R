@@ -4,7 +4,12 @@ library(tidyverse)
 file_path <- "/home/rstudio/data/meg_mci.csv"
 rds_path <- "/home/rstudio/data/meg_mci.rds"
 
-original_dataset <- read_csv(file_path)
+original_dataset <- read_csv(file_path, col_types = cols(
+  .default = col_double(),
+  id = col_character(),
+  class = col_factor(c("1", "2"))
+))
+rownames(original_dataset) <- original_dataset$id
 saveRDS(original_dataset, rds_path)
 
 data_mean <- original_dataset %>% select(id, class, ends_with("mean"))
